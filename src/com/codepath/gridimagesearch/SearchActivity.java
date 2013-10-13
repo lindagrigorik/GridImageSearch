@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -78,6 +79,12 @@ public class SearchActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.search, menu);
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem menu){
+		Intent i = new Intent(getApplicationContext(), FilterActivity.class );
+		startActivity(i);
+		return false;
 	}
 	
 	private void setupViews(){
