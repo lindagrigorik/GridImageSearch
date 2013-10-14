@@ -8,22 +8,33 @@
     <string name="enter_search_term">Enter Search Term</string>
     <string name="title_activity_image_display">ImageDisplayActivity</string>
     <string name="title_activity_filter">FilterActivity</string>
-    <string-array name="image_size">
+    <string-array name="image_size_array">
         <item>small</item>
         <item>medium</item>
         <item>large</item>
+        <item>xlarge</item>
+        <item>xxlarge</item>
+        <item>huge</item>
+        <item>icon</item>
     </string-array>
-    <string-array name="image_color">
-        <item>red</item>
+    <string-array name="image_color_array">
+        <item>black</item>
         <item>blue</item>
+        <item>brown</item>
+        <item>gray</item>
         <item>green</item>
-        <item>yellow</item>
+        <item>orange</item>
+        <item>pink</item>
+        <item>purple</item>
+        <item>teal</item>
         <item>white</item>
+        <item>yellow</item>
     </string-array>
-    <string-array name="image_type">
+    <string-array name="image_type_array">
         <item>face</item>
-        <item>animal</item>
-        <item>scenery</item>
+        <item>photo</item>
+        <item>clipart</item>
+        <item>lineart</item>
     </string-array>
         <string name="save">Save</string>
         <string name="advanced_search">Advanced Search Options</string>

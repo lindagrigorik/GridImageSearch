@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,71 +27,101 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class SearchActivity extends Activity {
 
-	EditText etQuery;
-	GridView gvResults;
-	Button btnSearch;
-	ArrayList<ImageResult> imageResults = new ArrayList<ImageResult>();
-	ImageResultArrayAdapter imageAdapter;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
-		setupViews();
-		imageAdapter = new ImageResultArrayAdapter(this, imageResults);
-		gvResults.setAdapter(imageAdapter);
-		gvResults.setOnItemClickListener(new OnItemClickListener(){
+    private static final int FILTER_REQUEST_CODE = 1;
+    private EditText etQuery;
+    private GridView gvResults;
+    private Button btnSearch;
+    private ArrayList<ImageResult> imageResults = new ArrayList<ImageResult>();
+    private ImageResultArrayAdapter imageAdapter;
+    private SettingFilter sFilter;
 
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View parent, int position,
-					long rowId) {
-				Intent i = new Intent(getApplicationContext(), ImageDisplayActivity.class);
-				ImageResult imageResult = imageResults.get(position);
-				i.putExtra("result", imageResult);
-				startActivity(i);
-			}
-			
-		});
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_search);
+	setupViews();
+	imageAdapter = new ImageResultArrayAdapter(this, imageResults);
+	gvResults.setAdapter(imageAdapter);
+	gvResults.setOnItemClickListener(new OnItemClickListener() {
 
-	public void onImageSearch(View v){
-		String query = etQuery.getText().toString();
-		Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-		AsyncHttpClient client = new AsyncHttpClient();
-		client.get("https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start="+0+"&v=1.0&q="+Uri.encode(query), new JsonHttpResponseHandler(){
-			@Override
-			public void onSuccess(JSONObject response){
-				JSONArray imageJsonResults = null;
-				
-				try {
-					imageJsonResults = response.getJSONObject("responseData").getJSONArray("results");
-					imageResults.clear();
-					imageAdapter.addAll(ImageResult.fromJSONArray(imageJsonResults));
-					Log.d("DEBUG", imageResults.toString());
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search, menu);
-		return true;
-	}
-	
-	public boolean onOptionsItemSelected(MenuItem menu){
-		Intent i = new Intent(getApplicationContext(), FilterActivity.class );
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View parent, int position, long rowId) {
+		Intent i = new Intent(getApplicationContext(), ImageDisplayActivity.class);
+		ImageResult imageResult = imageResults.get(position);
+		i.putExtra("result", imageResult);
 		startActivity(i);
-		return false;
+	    }
+
+	});
+    }
+
+    public void onImageSearch(View v) {
+	String query = etQuery.getText().toString();
+	Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+	AsyncHttpClient client = new AsyncHttpClient();
+	String url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + 0 + "&v=1.0&q="
+	        + Uri.encode(query);
+	if (sFilter != null) {
+	    url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + 0 + "&v=1.0&imgsz="
+		    + sFilter.getSize() + "&imgcolor=" + sFilter.getColor() + "&imgtype=" + sFilter.getType()
+		    + "&as_sitesearch=" + sFilter.getSite() + "&q=" + Uri.encode(query);
 	}
-	
-	private void setupViews(){
-		etQuery = (EditText) findViewById(R.id.etQuery);
-		gvResults = (GridView) findViewById(R.id.gvResults);
-		btnSearch = (Button) findViewById(R.id.btnSearch);
+	client.get(url, new JsonHttpResponseHandler() {
+	    @Override
+	    public void onSuccess(JSONObject response) {
+		JSONArray imageJsonResults = null;
+
+		try {
+		    imageJsonResults = response.getJSONObject("responseData").getJSONArray("results");
+		    imageResults.clear();
+		    imageAdapter.addAll(ImageResult.fromJSONArray(imageJsonResults));
+		    Log.d("DEBUG", imageResults.toString());
+		} catch (JSONException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+	    }
+	});
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	// Inflate the menu; this adds items to the action bar if it is present.
+	getMenuInflater().inflate(R.menu.search, menu);
+	return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+	Intent i = new Intent(getApplicationContext(), FilterActivity.class);
+	if (sFilter != null) {
+	    i.putExtra("filter", sFilter);
 	}
+	startActivityForResult(i, FILTER_REQUEST_CODE);
+	return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	if (resultCode == RESULT_OK && requestCode == FILTER_REQUEST_CODE) {
+	    sFilter = (SettingFilter) data.getSerializableExtra("filter");
+	    // Toast.makeText(this, sFilter.getSize().toString(),
+	    // Toast.LENGTH_SHORT).show();
+	    // Toast.makeText(this, sFilter.getColor(),
+	    // Toast.LENGTH_SHORT).show();
+	    // Toast.makeText(this, sFilter.getType(),
+	    // Toast.LENGTH_SHORT).show();
+	    // Toast.makeText(this, sFilter.getSite(),
+	    // Toast.LENGTH_SHORT).show();
+	    Log.d("DEBUG",
+		    sFilter.getSize() + " " + sFilter.getColor() + " " + sFilter.getType() + " " + sFilter.getSite());
+	}
+    }
+
+    private void setupViews() {
+	etQuery = (EditText) findViewById(R.id.etQuery);
+	gvResults = (GridView) findViewById(R.id.gvResults);
+	btnSearch = (Button) findViewById(R.id.btnSearch);
+    }
 
 }

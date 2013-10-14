@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/advanced_search" />
+        android:text="@string/advanced_search"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -54,31 +56,34 @@
 
     <Spinner
         android:id="@+id/svSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/textView2"
         android:layout_marginLeft="28dp"
-        android:layout_toRightOf="@+id/textView2" 
-        android:entries="@array/image_size"/>
+        android:layout_toRightOf="@+id/textView2"
+        android:gravity="right|bottom" 
+        android:entries="@array/image_size_array"/>
 
     <Spinner
         android:id="@+id/svColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3" 
-        android:entries="@array/image_color"/>
+        android:layout_toRightOf="@+id/textView3"
+        android:layout_alignLeft="@+id/svSize" 
+        android:entries="@array/image_color_array"/>
 
     <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/svType"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/textView4"
         android:layout_toRightOf="@+id/textView4"
-        android:entries="@array/image_type"/>
+        android:layout_alignLeft="@+id/svColor"
+        android:entries="@array/image_type_array" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/etSite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView5"
@@ -93,7 +98,7 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/etSite"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="74dp"
         android:onClick="onSave"

@@ -12,24 +12,24 @@ import android.widget.ArrayAdapter;
 
 public class ImageResultArrayAdapter extends ArrayAdapter<ImageResult> {
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		ImageResult imageInfo = this.getItem(position);
-		SmartImageView ivImage;
-		if (convertView == null){
-			LayoutInflater inflator = LayoutInflater.from(getContext());
-			ivImage = (SmartImageView) inflator.inflate(R.layout.item_image_result, parent, false);
-		} else {
-			ivImage = (SmartImageView) convertView;
-			ivImage.setImageResource(android.R.color.transparent);
-		}
-		ivImage.setImageUrl(imageInfo.getThumbUrl());
-		return ivImage;
+	ImageResult imageInfo = this.getItem(position);
+	SmartImageView ivImage;
+	if (convertView == null) {
+	    LayoutInflater inflator = LayoutInflater.from(getContext());
+	    ivImage = (SmartImageView) inflator.inflate(R.layout.item_image_result, parent, false);
+	} else {
+	    ivImage = (SmartImageView) convertView;
+	    ivImage.setImageResource(android.R.color.transparent);
 	}
+	ivImage.setImageUrl(imageInfo.getThumbUrl());
+	return ivImage;
+    }
 
-	public ImageResultArrayAdapter(Context context, List<ImageResult> images) {
-		super(context, R.layout.item_image_result, images);
-	}
+    public ImageResultArrayAdapter(Context context, List<ImageResult> images) {
+	super(context, R.layout.item_image_result, images);
+    }
 
 }

@@ -15,7 +15,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:onClick="onImageSearch"
-        android:text="@string/search" />
+        android:text="@string/search" 
+        android:layout_alignBottom="@+id/etQuery"/>
 
     <EditText
         android:id="@+id/etQuery"
