@@ -25,16 +25,34 @@ public class FilterActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_filter);
 	svSize = (Spinner) findViewById(R.id.svSize);
-	sizeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources()
+	sizeAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_size_array));
+	/*svSize.setAdapter(
+        new NothingSelectedSpinnerAdapter(
+        	sizeAdapter,
+                R.layout.contact_spinner_row_nothing_selected,
+                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                this));*/
 	svSize.setAdapter(sizeAdapter);
 	svColor = (Spinner) findViewById(R.id.svColor);
-	colorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources()
+	colorAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_color_array));
+	/*svColor.setAdapter(
+	        new NothingSelectedSpinnerAdapter(
+	        	colorAdapter,
+	                R.layout.contact_spinner_row_nothing_selected,
+	                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+	                this));*/
 	svColor.setAdapter(colorAdapter);
 	svType = (Spinner) findViewById(R.id.svType);
-	typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources()
+	typeAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_type_array));
+	/*svType.setAdapter(
+	        new NothingSelectedSpinnerAdapter(
+	        	typeAdapter,
+	                R.layout.contact_spinner_row_nothing_selected,
+	                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+	                this));*/
 	svType.setAdapter(typeAdapter);
 	etSite = (EditText) findViewById(R.id.etSite);
 	SettingFilter filter = (SettingFilter) getIntent().getSerializableExtra("filter");

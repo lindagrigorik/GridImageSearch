@@ -72,13 +72,24 @@ public class SearchActivity extends Activity {
     private void loadImages(int startVal){
 	String query = etQuery.getText().toString();
 	AsyncHttpClient client = new AsyncHttpClient();
-	String url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&q=" + Uri.encode(query);
+	StringBuilder url = new StringBuilder("https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&q=" + Uri.encode(query));
 	if (sFilter != null) {
-	    url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&imgsz="
-		    + sFilter.getSize() + "&imgcolor=" + sFilter.getColor() + "&imgtype=" + sFilter.getType()
-		    + "&as_sitesearch=" + sFilter.getSite() + "&q=" + Uri.encode(query);
+	    url = new StringBuilder("https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&q=" + Uri.encode(query));
+
+	    if (sFilter.getColor() != null){
+		url.append("&imgcolor=" + sFilter.getColor());
+	    }
+	    if (sFilter.getSize()!= null){
+		url.append("&imgsz="+ sFilter.getSize());
+	    }
+	    if (sFilter.getType() != null) {
+		url.append("&imgtype=" + sFilter.getType());
+	    }
+	    if (sFilter.getSite() != null){
+		url.append("&as_sitesearch=" + sFilter.getSite());
+	    }
 	}
-	client.get(url, new JsonHttpResponseHandler() {
+	client.get(url.toString(), new JsonHttpResponseHandler() {
 	    @Override
 	    public void onSuccess(JSONObject response) {
 		JSONArray imageJsonResults = null;

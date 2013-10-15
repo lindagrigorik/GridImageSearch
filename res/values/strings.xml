@@ -8,6 +8,7 @@
     <string name="enter_search_term">Enter Search Term</string>
     <string name="title_activity_image_display">ImageDisplayActivity</string>
     <string name="title_activity_filter">FilterActivity</string>
+    <string name="send_to">Share image to..</string>
     <string-array name="image_size_array">
         <item>small</item>
         <item>medium</item>
