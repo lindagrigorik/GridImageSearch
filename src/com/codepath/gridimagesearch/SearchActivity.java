@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,7 +29,6 @@ public class SearchActivity extends Activity {
     private static final int FILTER_REQUEST_CODE = 1;
     private EditText etQuery;
     private GridView gvResults;
-    private Button btnSearch;
     private ArrayList<ImageResult> imageResults = new ArrayList<ImageResult>();
     private ImageResultArrayAdapter imageAdapter;
     private SettingFilter sFilter;
@@ -42,8 +40,15 @@ public class SearchActivity extends Activity {
 	setupViews();
 	imageAdapter = new ImageResultArrayAdapter(this, imageResults);
 	gvResults.setAdapter(imageAdapter);
+	gvResults.setOnScrollListener(new EndlessScrollListener() {
+	    @Override
+	    public void loadMore(int page, int totalItemsCount) {
+                // whatever code is needed to append new items to your AdapterView
+		Log.d("DEBUG", "PAGE NUM IS "+page);
+	        loadImages(page*8);
+	    }
+        });
 	gvResults.setOnItemClickListener(new OnItemClickListener() {
-
 	    @Override
 	    public void onItemClick(AdapterView<?> adapter, View parent, int position, long rowId) {
 		Intent i = new Intent(getApplicationContext(), ImageDisplayActivity.class);
@@ -56,13 +61,20 @@ public class SearchActivity extends Activity {
     }
 
     public void onImageSearch(View v) {
+	//clear previous image search.
+	imageResults.clear();
+	//initial load
+	for (int i=0; i<2; i++){
+	    this.loadImages(i*8);
+	}
+    }
+    
+    private void loadImages(int startVal){
 	String query = etQuery.getText().toString();
-	Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
 	AsyncHttpClient client = new AsyncHttpClient();
-	String url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + 0 + "&v=1.0&q="
-	        + Uri.encode(query);
+	String url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&q=" + Uri.encode(query);
 	if (sFilter != null) {
-	    url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + 0 + "&v=1.0&imgsz="
+	    url = "https://ajax.googleapis.com/ajax/services/search/images?rsz=8&start=" + startVal + "&v=1.0&imgsz="
 		    + sFilter.getSize() + "&imgcolor=" + sFilter.getColor() + "&imgtype=" + sFilter.getType()
 		    + "&as_sitesearch=" + sFilter.getSite() + "&q=" + Uri.encode(query);
 	}
@@ -73,11 +85,9 @@ public class SearchActivity extends Activity {
 
 		try {
 		    imageJsonResults = response.getJSONObject("responseData").getJSONArray("results");
-		    imageResults.clear();
 		    imageAdapter.addAll(ImageResult.fromJSONArray(imageJsonResults));
-		    Log.d("DEBUG", imageResults.toString());
+		    //Log.d("DEBUG", imageResults.toString());
 		} catch (JSONException e) {
-		    // TODO Auto-generated catch block
 		    e.printStackTrace();
 		}
 	    }
@@ -105,23 +115,12 @@ public class SearchActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	if (resultCode == RESULT_OK && requestCode == FILTER_REQUEST_CODE) {
 	    sFilter = (SettingFilter) data.getSerializableExtra("filter");
-	    // Toast.makeText(this, sFilter.getSize().toString(),
-	    // Toast.LENGTH_SHORT).show();
-	    // Toast.makeText(this, sFilter.getColor(),
-	    // Toast.LENGTH_SHORT).show();
-	    // Toast.makeText(this, sFilter.getType(),
-	    // Toast.LENGTH_SHORT).show();
-	    // Toast.makeText(this, sFilter.getSite(),
-	    // Toast.LENGTH_SHORT).show();
-	    Log.d("DEBUG",
-		    sFilter.getSize() + " " + sFilter.getColor() + " " + sFilter.getType() + " " + sFilter.getSite());
 	}
     }
 
     private void setupViews() {
 	etQuery = (EditText) findViewById(R.id.etQuery);
 	gvResults = (GridView) findViewById(R.id.gvResults);
-	btnSearch = (Button) findViewById(R.id.btnSearch);
     }
 
 }
