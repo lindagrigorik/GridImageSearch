@@ -8,4 +8,5 @@
     android:ellipsize="marquee"
     android:textSize="18sp"
     android:gravity="right"
+    android:textColor="#808080"
     android:text="[Select a choice]" />

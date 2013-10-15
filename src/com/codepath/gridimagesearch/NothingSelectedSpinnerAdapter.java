@@ -164,5 +164,4 @@ public class NothingSelectedSpinnerAdapter implements SpinnerAdapter, ListAdapte
         return position == 0 ? false : true; // Don't allow the 'nothing selected'
                                              // item to be picked.
     }
-
 }

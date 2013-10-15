@@ -27,39 +27,33 @@ public class FilterActivity extends Activity {
 	svSize = (Spinner) findViewById(R.id.svSize);
 	sizeAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_size_array));
-	/*svSize.setAdapter(
+	svSize.setAdapter(
         new NothingSelectedSpinnerAdapter(
         	sizeAdapter,
                 R.layout.contact_spinner_row_nothing_selected,
-                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-                this));*/
-	svSize.setAdapter(sizeAdapter);
+                this));
 	svColor = (Spinner) findViewById(R.id.svColor);
 	colorAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_color_array));
-	/*svColor.setAdapter(
+	svColor.setAdapter(
 	        new NothingSelectedSpinnerAdapter(
 	        	colorAdapter,
 	                R.layout.contact_spinner_row_nothing_selected,
-	                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-	                this));*/
-	svColor.setAdapter(colorAdapter);
+	                this));
 	svType = (Spinner) findViewById(R.id.svType);
 	typeAdapter = new ArrayAdapter<String>(this, R.layout.contact_spinner_row_nothing_selected, getResources()
 	        .getStringArray(R.array.image_type_array));
-	/*svType.setAdapter(
+	svType.setAdapter(
 	        new NothingSelectedSpinnerAdapter(
 	        	typeAdapter,
 	                R.layout.contact_spinner_row_nothing_selected,
-	                // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-	                this));*/
-	svType.setAdapter(typeAdapter);
+	                this));
 	etSite = (EditText) findViewById(R.id.etSite);
 	SettingFilter filter = (SettingFilter) getIntent().getSerializableExtra("filter");
 	if (filter != null) {
-	    svSize.setSelection(sizeAdapter.getPosition(filter.getSize()));
-	    svColor.setSelection(colorAdapter.getPosition(filter.getColor()));
-	    svType.setSelection(typeAdapter.getPosition(filter.getType()));
+	    svSize.setSelection(sizeAdapter.getPosition(filter.getSize())+1);
+	    svColor.setSelection(colorAdapter.getPosition(filter.getColor())+1);
+	    svType.setSelection(typeAdapter.getPosition(filter.getType())+1);
 	    etSite.setText(filter.getSite());
 	}
     }
@@ -76,8 +70,11 @@ public class FilterActivity extends Activity {
 	svColor = (Spinner) findViewById(R.id.svColor);
 	svType = (Spinner) findViewById(R.id.svType);
 	etSite = (EditText) findViewById(R.id.etSite);
-	sFilter = new SettingFilter(svSize.getSelectedItem().toString(), svColor.getSelectedItem().toString(), svType
-	        .getSelectedItem().toString(), etSite.getText().toString());
+	String size = svSize.getSelectedItem() != null ? svSize.getSelectedItem().toString():null;
+	String color = svColor.getSelectedItem() != null? svColor.getSelectedItem().toString():null;
+	String type = svType.getSelectedItem() != null?svType.getSelectedItem().toString():null;
+	String site = etSite.getText().toString();
+	sFilter = new SettingFilter(size, color, type, site);
 	Intent filterData = new Intent();
 	filterData.putExtra("filter", sFilter);
 	setResult(RESULT_OK, filterData);
