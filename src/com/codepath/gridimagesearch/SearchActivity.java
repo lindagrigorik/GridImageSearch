@@ -45,7 +45,7 @@ public class SearchActivity extends Activity {
 	    public void loadMore(int page, int totalItemsCount) {
                 // whatever code is needed to append new items to your AdapterView
 		Log.d("DEBUG", "PAGE NUM IS "+page);
-	        loadImages(page*8);
+	        loadImages(totalItemsCount);
 	    }
         });
 	gvResults.setOnItemClickListener(new OnItemClickListener() {
