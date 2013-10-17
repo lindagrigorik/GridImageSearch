@@ -34,9 +34,10 @@ public class ImageDisplayActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem menu) {
 	Intent shareIntent = new Intent(Intent.ACTION_SEND);
 	Log.d("DEBUG", Uri.parse(result.getFullUrl()).toString());
-	shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Image Attachment");
+	shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Image");
 	shareIntent.setType("image/jpeg");
-	shareIntent.putExtra(Intent.EXTRA_STREAM, result.getFullUrl());
+	shareIntent.putExtra(Intent.EXTRA_TEXT, result.getFullUrl());
+	//shareIntent.putExtra(Intent.EXTRA_STREAM, result.getFullUrl());
 	/*try {
 	    File rootSdDirectory = Environment.getExternalStorageDirectory();
 
